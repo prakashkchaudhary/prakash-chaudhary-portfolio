@@ -1,0 +1,19 @@
+📄 RESUME/CV UPLOAD INSTRUCTIONS
+================================
+
+Your CV download button is looking for a file named "resume.pdf" in this folder.
+
+QUICK STEPS:
+1. Save your CV as PDF format
+2. Rename it to: resume.pdf
+3. Place it in this folder (frontend/public/)
+4. Delete this instruction file
+5. Restart your frontend server
+
+CURRENT LOCATION: portfolio-website/frontend/public/
+
+EXPECTED FILE: resume.pdf
+
+After adding your resume.pdf file, the download button on your homepage and resume page will work automatically!
+
+For detailed instructions, see: CV_UPLOAD_INSTRUCTIONS.md
