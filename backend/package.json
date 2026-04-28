@@ -10,7 +10,8 @@
     "prod": "NODE_ENV=production node server.js",
     "setup-db": "node scripts/setup-database.js",
     "seed-projects": "node scripts/seed-projects.js",
-    "seed-force": "node scripts/seed-projects.js --force"
+    "seed-force": "node scripts/seed-projects.js --force",
+    "change-admin": "node scripts/change-admin.js"
   },
   "keywords": [
     "portfolio",
