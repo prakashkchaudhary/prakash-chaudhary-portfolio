@@ -41,27 +41,35 @@ app.use('/api/', limiter);
 // Stricter rate limit for auth routes
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5, // 5 login attempts per 15 minutes
+  max: 20, // 20 login attempts per 15 minutes
   message: 'Too many login attempts, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
 });
 
-// CORS configuration
-const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? [process.env.FRONTEND_URL]
-  : [process.env.FRONTEND_URL || 'http://localhost:5173', 'http://localhost:5174'];
+// CORS configuration - allow Vercel and localhost
+const allowedOrigins = [
+  'https://prakash-chaudhary-portfolio.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:5174',
+  process.env.FRONTEND_URL,
+].filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, Postman, etc.)
+    // Allow requests with no origin (mobile apps, Postman, curl, etc.)
     if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified origin.';
-      return callback(new Error(msg), false);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
     }
-    return callback(null, true);
+
+    // Also allow any vercel.app subdomain
+    if (origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Not allowed by CORS'), false);
   },
   credentials: true
 }));
