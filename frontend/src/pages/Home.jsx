@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { FaGithub, FaLinkedin, FaArrowDown, FaReact, FaNodeJs, FaDatabase, FaPython } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaTwitter, FaArrowDown, FaReact, FaNodeJs, FaDatabase, FaPython } from 'react-icons/fa'
 import { SiJavascript, SiMongodb, SiExpress, SiTailwindcss } from 'react-icons/si'
 import { HiDownload } from 'react-icons/hi'
 import { getProjects } from '../utils/api'
@@ -127,6 +127,14 @@ const Home = () => {
                   className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors transform hover:scale-110"
                 >
                   <FaLinkedin className="w-8 h-8" />
+                </a>
+                <a
+                  href="https://x.com/praakashh"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors transform hover:scale-110"
+                >
+                  <FaTwitter className="w-8 h-8" />
                 </a>
               </motion.div>
             </motion.div>
