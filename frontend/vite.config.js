@@ -26,14 +26,8 @@ export default defineConfig({
     },
     // Optimize chunk size
     chunkSizeWarningLimit: 1000,
-    // Enable minification
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console.logs in production
-        drop_debugger: true
-      }
-    },
+    // Enable minification (esbuild is built into Vite, no extra install needed)
+    minify: 'esbuild',
     // Source maps for production debugging (optional)
     sourcemap: false
   },
