@@ -100,8 +100,19 @@ router.post('/', protect, [
 // @route   PUT /api/projects/:id
 // @desc    Update a project
 // @access  Private (Admin only)
-router.put('/:id', protect, async (req, res) => {
+router.put('/:id', protect, [
+  body('title').optional().trim().notEmpty().withMessage('Title cannot be empty'),
+  body('description').optional().trim().notEmpty().withMessage('Description cannot be empty'),
+  body('techStack').optional().isArray({ min: 1 }).withMessage('Tech stack must be an array'),
+  body('imageUrl').optional().trim().isURL().withMessage('Image URL must be valid'),
+  body('category').optional().isIn(['web', 'mobile', 'desktop', 'other']).withMessage('Invalid category')
+], async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const project = await Project.findById(req.params.id);
 
     if (!project) {

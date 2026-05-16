@@ -23,6 +23,17 @@ connectDB();
 app.use(helmet()); // Set security headers
 app.use(mongoSanitize()); // Prevent MongoDB injection
 
+// Force HTTPS in production
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    } else {
+      next();
+    }
+  });
+}
+
 // Compression middleware - compress all responses
 app.use(compression());
 
