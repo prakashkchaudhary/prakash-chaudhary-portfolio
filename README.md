@@ -123,19 +123,12 @@ cd portfolio-website/backend
 npm install
 ```
 
-3. Create `.env` file:
+3. Create `.env` file from example:
 ```bash
 copy .env.example .env
 ```
 
-4. Update `.env` with your configuration:
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/portfolio
-JWT_SECRET=your_super_secret_jwt_key_change_this
-NODE_ENV=development
-FRONTEND_URL=http://localhost:5173
-```
+4. Update `.env` with your configuration (see `.env.example` for required variables)
 
 5. Start the server:
 ```bash
@@ -158,15 +151,12 @@ cd portfolio-website/frontend
 npm install
 ```
 
-3. Create `.env` file:
+3. Create `.env` file from example:
 ```bash
 copy .env.example .env
 ```
 
-4. Update `.env`:
-```env
-VITE_API_URL=http://localhost:5000/api
-```
+4. Update `.env` with your backend API URL
 
 5. Start the development server:
 ```bash
@@ -175,38 +165,19 @@ npm run dev
 
 The application will be available at `http://localhost:5173`
 
-## 🔐 Creating First Admin
+## 🔐 Admin Setup
 
-After starting the backend server, create your first admin account:
-
-### Using curl:
-```bash
-curl -X POST http://localhost:5000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d "{\"email\":\"admin@example.com\",\"password\":\"yourpassword\"}"
-```
-
-### Using Postman:
-- Method: POST
-- URL: `http://localhost:5000/api/auth/register`
-- Body (JSON):
-```json
-{
-  "email": "admin@example.com",
-  "password": "yourpassword"
-}
-```
-
-**Important:** For security, disable the `/api/auth/register` route in production after creating your admin account.
+See `SECURITY.md` for information about creating admin accounts securely.
 
 ## 📡 API Endpoints
 
 ### Authentication
-- `POST /api/auth/register` - Register admin (disable in production)
+- `POST /api/auth/register` - Register admin (disabled in production)
 - `POST /api/auth/login` - Admin login
 
 ### Projects (Public)
 - `GET /api/projects` - Get all projects
+- `GET /api/projects/:id` - Get single project
 
 ### Projects (Protected - Admin Only)
 - `POST /api/projects` - Create project
@@ -216,6 +187,8 @@ curl -X POST http://localhost:5000/api/auth/register \
 ### Contact
 - `POST /api/contact` - Send contact message
 - `GET /api/contact` - Get all messages (Admin only)
+
+For detailed API documentation and request/response examples, see the backend README.
 
 ## 🎨 Customization
 

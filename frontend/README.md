@@ -8,10 +8,10 @@ Modern, responsive portfolio website built with React, Vite, and Tailwind CSS.
 # Install dependencies
 npm install
 
-# Create .env file
+# Create .env file from example
 copy .env.example .env
 
-# Update .env with your API URL
+# Update .env with your backend API URL
 
 # Start development server
 npm run dev
@@ -138,9 +138,7 @@ theme: {
 
 ## 🌐 Environment Variables
 
-```env
-VITE_API_URL=http://localhost:5000/api
-```
+See `.env.example` for required environment variables.
 
 For production, update with your deployed backend URL.
 
