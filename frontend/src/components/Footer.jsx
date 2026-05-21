@@ -38,9 +38,9 @@ const Footer = () => {
             ))}
           </div>
 
-          {/* Made with love */}
+          {/* Author */}
           <div className="text-gray-600 dark:text-gray-400 text-sm">
-            Made with ❤️ by Prakash Chaudhary
+            Prakash Chaudhary
           </div>
         </div>
       </div>
