@@ -5,11 +5,18 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit';
 import compression from 'compression';
+import session from 'express-session';
 import connectDB from './config/db.js';
 import contactRoutes from './routes/contactRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import { errorHandler } from './middleware/errorMiddleware.js';
+import {
+  detectSuspiciousActivity,
+  sanitizeInput,
+  preventParameterPollution,
+  securityHeaders
+} from './middleware/securityMiddleware.js';
 
 dotenv.config();
 
@@ -21,7 +28,25 @@ connectDB();
 
 // Security Middleware
 app.use(helmet()); // Set security headers
+app.use(securityHeaders); // Custom security headers
 app.use(mongoSanitize()); // Prevent MongoDB injection
+app.use(detectSuspiciousActivity); // Detect bots and suspicious traffic
+app.use(sanitizeInput); // Sanitize user input
+app.use(preventParameterPollution); // Prevent parameter pollution
+
+// Session Management
+app.use(session({
+  secret: process.env.SESSION_SECRET || process.env.JWT_SECRET || 'fallback-secret-change-in-production',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: 'strict'
+  },
+  name: 'sessionId' // Don't use default 'connect.sid'
+}));
 
 // Force HTTPS in production
 if (process.env.NODE_ENV === 'production') {
@@ -46,17 +71,8 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Apply rate limiting to all routes
+// Apply rate limiting to all API routes
 app.use('/api/', limiter);
-
-// Stricter rate limit for auth routes
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 20, // 20 login attempts per 15 minutes
-  message: 'Too many login attempts, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
 
 // CORS configuration - allow Vercel and localhost
 const allowedOrigins = [
@@ -111,7 +127,7 @@ app.get('/api/health', (req, res) => {
 // Routes
 app.use('/api/contact', contactRoutes);
 app.use('/api/projects', projectRoutes);
-app.use('/api/auth', authLimiter, authRoutes);
+app.use('/api/auth', authRoutes);
 
 // 404 handler
 app.use((req, res) => {

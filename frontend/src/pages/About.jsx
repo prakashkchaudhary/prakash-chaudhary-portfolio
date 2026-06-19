@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { FaCode, FaLaptopCode, FaRocket, FaUsers } from 'react-icons/fa'
+import { FaCode, FaLaptopCode, FaRocket, FaUsers, FaGraduationCap, FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa'
 import LazyImage from '../components/LazyImage'
 
 const About = () => {
@@ -23,6 +23,25 @@ const About = () => {
       icon: FaUsers,
       title: 'User Focused',
       description: 'Building intuitive interfaces that users love to interact with.'
+    }
+  ]
+
+  const education = [
+    {
+      degree: 'High School (+2)',
+      institution: 'V.S Niketan College',
+      location: 'Kathmandu, Nepal',
+      year: '2021 - 2023',
+      score: '70%',
+      description: 'Completed high school with focus on science and mathematics, building a strong foundation for technical studies.'
+    },
+    {
+      degree: 'Secondary Education (SEE)',
+      institution: "Jaycee's Secondary School",
+      location: 'Kathmandu, Nepal',
+      year: '2017 - 2019',
+      score: '72%',
+      description: 'Completed secondary education with excellent grades, developing problem-solving and analytical skills.'
     }
   ]
 
@@ -133,6 +152,133 @@ const About = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Education Timeline Section */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">
+                Education Timeline
+              </span>
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              My academic journey and qualifications
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            {/* Timeline Line */}
+            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-600 to-purple-600 transform md:-translate-x-1/2"></div>
+
+            {/* Education Items */}
+            {education.map((edu, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+                className={`relative mb-12 ${
+                  index % 2 === 0 ? 'md:pr-1/2 md:text-right' : 'md:pl-1/2 md:ml-auto'
+                }`}
+              >
+                {/* Timeline Dot */}
+                <div className="absolute left-8 md:left-1/2 w-4 h-4 bg-primary-600 rounded-full transform -translate-x-1/2 md:translate-x-0 border-4 border-white dark:border-gray-900 z-10">
+                  <div className="absolute inset-0 rounded-full bg-primary-600 animate-ping opacity-75"></div>
+                </div>
+
+                {/* Content Card */}
+                <div className={`ml-16 md:ml-0 ${index % 2 === 0 ? 'md:mr-12' : 'md:ml-12'}`}>
+                  <div className="card hover:shadow-2xl transition-all duration-300 group">
+                    {/* Icon */}
+                    <div className={`inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-primary-500 to-purple-600 text-white mb-4 group-hover:scale-110 transition-transform duration-300 ${
+                      index % 2 === 0 ? 'md:float-right md:ml-4' : 'md:float-left md:mr-4'
+                    }`}>
+                      <FaGraduationCap className="w-7 h-7" />
+                    </div>
+
+                    {/* Degree & Score */}
+                    <div className="mb-3">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                        {edu.degree}
+                      </h3>
+                      <div className="inline-block px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-full text-sm font-semibold">
+                        Score: {edu.score}
+                      </div>
+                    </div>
+
+                    {/* Institution */}
+                    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                      {edu.institution}
+                    </p>
+
+                    {/* Location & Year */}
+                    <div className="flex flex-wrap gap-4 mb-3 text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center gap-2">
+                        <FaMapMarkerAlt className="text-primary-600" />
+                        <span>{edu.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <FaCalendarAlt className="text-primary-600" />
+                        <span>{edu.year}</span>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {edu.description}
+                    </p>
+
+                    {/* Decorative gradient line */}
+                    <div className="mt-4 h-1 w-20 bg-gradient-to-r from-primary-600 to-purple-600 rounded-full"></div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Summary Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            <div className="card text-center bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-800">
+              <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
+                2+
+              </div>
+              <div className="text-gray-600 dark:text-gray-400 font-medium">
+                Educational Qualifications
+              </div>
+            </div>
+            <div className="card text-center bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-800">
+              <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
+                71%
+              </div>
+              <div className="text-gray-600 dark:text-gray-400 font-medium">
+                Average Score
+              </div>
+            </div>
+            <div className="card text-center bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-800">
+              <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
+                2023
+              </div>
+              <div className="text-gray-600 dark:text-gray-400 font-medium">
+                Recent Graduation
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>
