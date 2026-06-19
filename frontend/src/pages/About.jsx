@@ -28,6 +28,14 @@ const About = () => {
 
   const education = [
     {
+      degree: 'Bachelor in Computer Application (BCA)',
+      institution: "Tula's Institute",
+      location: 'Dehradun, India',
+      year: '2023 - Present',
+      score: 'Pursuing',
+      description: 'Currently pursuing Bachelor in Computer Application with focus on software development, algorithms, and full-stack system architecture. Building strong foundation in computer science fundamentals and modern development practices.'
+    },
+    {
       degree: 'High School (+2)',
       institution: 'V.S Niketan College',
       location: 'Kathmandu, Nepal',
@@ -82,17 +90,20 @@ const About = () => {
               <div className="space-y-4 text-gray-600 dark:text-gray-400">
                 <p>
                   Hello! I'm Prakash Chaudhary, a software developer from Kathmandu, Nepal. 
-                  My journey in web development is driven by a passion for creating innovative solutions
-                  that make a difference. I specialize in front-end technologies including HTML, CSS, and JavaScript.
+                  I'm currently pursuing my Bachelor's in Computer Application (BCA) from Tula's Institute, Dehradun, India,
+                  where I'm specializing in software development, algorithms, and full-stack system architecture.
                 </p>
                 <p>
-                  I completed my high school education at V.S Niketan College (70%) in 2023 and my intermediate 
-                  studies at Jaycee's Secondary School (72%) in 2019. My objective is to obtain a challenging 
-                  position in software development where I can apply my technical skills and problem-solving abilities.
+                  My educational journey includes completing high school (+2) from V.S Niketan College, Kathmandu (70%) in 2023, 
+                  and my secondary education from Jaycee's Secondary School (72%) in 2019. My passion for web development 
+                  is driven by creating innovative solutions that make a difference, with expertise in HTML, CSS, JavaScript, 
+                  React, Node.js, and modern development tools.
                 </p>
                 <p>
                   When I'm not coding, you can find me reading books or playing sports. I believe in continuous 
                   learning and am always eager to explore new technologies and contribute to meaningful projects.
+                  My objective is to leverage my technical skills and problem-solving abilities in challenging software 
+                  development roles.
                 </p>
               </div>
             </motion.div>
@@ -256,7 +267,7 @@ const About = () => {
           >
             <div className="card text-center bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-800">
               <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                2+
+                3
               </div>
               <div className="text-gray-600 dark:text-gray-400 font-medium">
                 Educational Qualifications
@@ -264,10 +275,10 @@ const About = () => {
             </div>
             <div className="card text-center bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-800">
               <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                71%
+                BCA
               </div>
               <div className="text-gray-600 dark:text-gray-400 font-medium">
-                Average Score
+                Currently Pursuing
               </div>
             </div>
             <div className="card text-center bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-800">
@@ -275,7 +286,7 @@ const About = () => {
                 2023
               </div>
               <div className="text-gray-600 dark:text-gray-400 font-medium">
-                Recent Graduation
+                Started Bachelor's
               </div>
             </div>
           </motion.div>
