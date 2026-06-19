@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { FaGithub, FaLinkedin, FaTwitter, FaArrowDown, FaReact, FaNodeJs, FaDatabase, FaPython } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaTwitter, FaArrowDown, FaReact, FaNodeJs, FaDatabase, FaPython, FaGraduationCap, FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa'
 import { SiJavascript, SiMongodb, SiExpress, SiTailwindcss } from 'react-icons/si'
 import { HiDownload } from 'react-icons/hi'
 import { getProjects } from '../utils/api'
@@ -40,6 +40,30 @@ const Home = () => {
     { name: 'Tailwind CSS', icon: SiTailwindcss, color: 'text-cyan-500' },
     { name: 'Python', icon: FaPython, color: 'text-blue-600' },
     { name: 'Database', icon: FaDatabase, color: 'text-orange-500' }
+  ]
+
+  const education = [
+    {
+      degree: 'Bachelor in Computer Application (BCA)',
+      institution: "Tula's Institute",
+      location: 'Dehradun, India',
+      year: '2023 - 2026',
+      status: 'Expected 2026'
+    },
+    {
+      degree: 'High School (+2)',
+      institution: 'V.S Niketan College',
+      location: 'Kathmandu, Nepal',
+      year: '2021 - 2023',
+      status: 'Completed'
+    },
+    {
+      degree: 'Secondary Education (SEE)',
+      institution: "Jaycee's Secondary School",
+      location: 'Kathmandu, Nepal',
+      year: '2017 - 2019',
+      status: 'Completed'
+    }
   ]
 
   return (
@@ -253,6 +277,85 @@ const Home = () => {
           <div className="text-center mt-12">
             <Link to="/skills" className="btn-primary">
               View All Skills
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Education Timeline Section */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">
+                Education
+              </span>
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400">
+              My academic journey
+            </p>
+          </motion.div>
+
+          <div className="space-y-8">
+            {education.map((edu, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="relative"
+              >
+                <div className="card hover:shadow-xl transition-all duration-300 group">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    {/* Icon */}
+                    <div className="flex-shrink-0">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                        <FaGraduationCap className="w-8 h-8" />
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                          {edu.degree}
+                        </h3>
+                        <span className="inline-block mt-2 md:mt-0 px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-full text-sm font-semibold">
+                          {edu.status}
+                        </span>
+                      </div>
+                      
+                      <p className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                        {edu.institution}
+                      </p>
+                      
+                      <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+                        <div className="flex items-center gap-2">
+                          <FaMapMarkerAlt className="text-primary-600" />
+                          <span>{edu.location}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <FaCalendarAlt className="text-primary-600" />
+                          <span>{edu.year}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link to="/about" className="btn-primary">
+              View Complete Timeline
             </Link>
           </div>
         </div>

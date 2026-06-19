@@ -31,9 +31,9 @@ const About = () => {
       degree: 'Bachelor in Computer Application (BCA)',
       institution: "Tula's Institute",
       location: 'Dehradun, India',
-      year: '2023 - Present',
-      score: 'Pursuing',
-      description: 'Currently pursuing Bachelor in Computer Application with focus on software development, algorithms, and full-stack system architecture. Building strong foundation in computer science fundamentals and modern development practices.'
+      year: '2023 - 2026',
+      score: 'Expected 2026',
+      description: 'Pursuing Bachelor in Computer Application with focus on software development, algorithms, and full-stack system architecture. Building strong foundation in computer science fundamentals and modern development practices.'
     },
     {
       degree: 'High School (+2)',
