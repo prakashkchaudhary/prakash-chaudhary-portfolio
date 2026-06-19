@@ -48,7 +48,7 @@ const Home = () => {
       institution: "Tula's Institute",
       location: 'Dehradun, India',
       year: '2023 - 2026',
-      status: 'Expected 2026'
+      status: 'Completed'
     },
     {
       degree: 'High School (+2)',

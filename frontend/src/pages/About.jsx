@@ -32,8 +32,8 @@ const About = () => {
       institution: "Tula's Institute",
       location: 'Dehradun, India',
       year: '2023 - 2026',
-      score: 'Expected 2026',
-      description: 'Pursuing Bachelor in Computer Application with focus on software development, algorithms, and full-stack system architecture. Building strong foundation in computer science fundamentals and modern development practices.'
+      score: 'Completed',
+      description: 'Completed Bachelor in Computer Application with focus on software development, algorithms, and full-stack system architecture. Built strong foundation in computer science fundamentals and modern development practices.'
     },
     {
       degree: 'High School (+2)',
@@ -90,8 +90,8 @@ const About = () => {
               <div className="space-y-4 text-gray-600 dark:text-gray-400">
                 <p>
                   Hello! I'm Prakash Chaudhary, a software developer from Kathmandu, Nepal. 
-                  I'm currently pursuing my Bachelor's in Computer Application (BCA) from Tula's Institute, Dehradun, India,
-                  where I'm specializing in software development, algorithms, and full-stack system architecture.
+                  I completed my Bachelor's in Computer Application (BCA) from Tula's Institute, Dehradun, India (2023-2026),
+                  where I specialized in software development, algorithms, and full-stack system architecture.
                 </p>
                 <p>
                   My educational journey includes completing high school (+2) from V.S Niketan College, Kathmandu (70%) in 2023, 
@@ -278,15 +278,15 @@ const About = () => {
                 BCA
               </div>
               <div className="text-gray-600 dark:text-gray-400 font-medium">
-                Currently Pursuing
+                Bachelor's Degree Completed
               </div>
             </div>
             <div className="card text-center bg-gradient-to-br from-primary-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-800">
               <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                2023
+                2026
               </div>
               <div className="text-gray-600 dark:text-gray-400 font-medium">
-                Started Bachelor's
+                Graduated
               </div>
             </div>
           </motion.div>
