@@ -23,10 +23,10 @@ import {
 
 const router = express.Router();
 
-// Generate JWT Token with shorter expiry
+// Generate JWT Token with secure expiry
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '7d' // 7 days instead of 30
+    expiresIn: '2d' // 2 days for better security
   });
 };
 
@@ -146,7 +146,12 @@ router.post('/login', loginRateLimiter, checkAccountLock, [
       }
     });
   } catch (error) {
-    console.error('Login error:', error);
+    // Log error securely - don't expose details in production
+    if (process.env.NODE_ENV === 'production') {
+      console.error('Login error occurred at:', new Date().toISOString());
+    } else {
+      console.error('Login error:', error);
+    }
     res.status(500).json({
       success: false,
       message: 'Server error during login'

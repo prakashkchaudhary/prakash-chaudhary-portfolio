@@ -74,7 +74,7 @@ const limiter = rateLimit({
 // Apply rate limiting to all API routes
 app.use('/api/', limiter);
 
-// CORS configuration - allow Vercel and localhost
+// CORS configuration - allow specific origins only
 const allowedOrigins = [
   'https://prakash-chaudhary-portfolio.vercel.app',
   'http://localhost:5173',
@@ -91,19 +91,14 @@ app.use(cors({
       return callback(null, true);
     }
 
-    // Also allow any vercel.app subdomain
-    if (origin.endsWith('.vercel.app')) {
-      return callback(null, true);
-    }
-
     return callback(new Error('Not allowed by CORS'), false);
   },
   credentials: true
 }));
 
-// Body parser middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// Body parser middleware with secure size limits
+app.use(express.json({ limit: '5mb' })); // Reduced from 10mb
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
 // Health check route
 app.get('/', (req, res) => {
@@ -118,9 +113,7 @@ app.get('/', (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    memory: process.memoryUsage()
+    timestamp: new Date().toISOString()
   });
 });
 
