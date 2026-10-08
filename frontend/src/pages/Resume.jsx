@@ -4,45 +4,60 @@ import { HiDownload, HiAcademicCap, HiBriefcase, HiStar } from 'react-icons/hi'
 const Resume = () => {
   const education = [
     {
-      degree: 'High School',
-      institution: 'V.S Niketan College',
-      year: '2023',
-      description: 'Completed high school education with 70% marks. Focused on Computer Science and Mathematics.'
+      degree: 'Bachelor of Computer Applications (BCA)',
+      institution: 'Tula\'s Institute, Dehradun | Sri Dev Suman Uttarakhand University',
+      year: '2023 - 2026',
+      description: 'Currently pursuing BCA with focus on Computer Applications & Software Development. Learning modern web technologies, database management, and software engineering principles.'
     },
     {
-      degree: 'Intermediate',
+      degree: 'Higher Secondary (+2)',
+      institution: 'V.S. Niketan College, Kathmandu, Nepal',
+      year: '2023',
+      description: 'Completed higher secondary education with 70% marks. Focused on Computer Science and Mathematics with strong foundation in programming concepts.'
+    },
+    {
+      degree: 'Secondary Education',
       institution: "Jaycee's Secondary School",
       year: '2019',
-      description: 'Completed intermediate education with 72% marks. Built strong foundation in science and technology.'
+      description: 'Completed secondary education with 72% marks. Built strong foundation in science and technology subjects.'
     }
   ]
 
   const experience = [
     {
-      position: 'Software Developer',
-      company: 'Aspiring Developer',
+      position: 'Full Stack Developer',
+      company: 'Personal Projects & Learning',
       year: '2023 - Present',
       responsibilities: [
-        'Building modern web applications using HTML, CSS, and JavaScript',
-        'Learning and implementing new technologies and frameworks',
-        'Working on personal projects to enhance skills',
-        'Contributing to open-source projects on GitHub'
+        'Developed FoodBridge - a comprehensive food donation platform using React.js, Node.js, and MongoDB',
+        'Built responsive web applications with modern JavaScript, React hooks, and Tailwind CSS',
+        'Implemented secure authentication systems with JWT, bcrypt/Argon2, and multi-factor authentication',
+        'Created RESTful APIs with Express.js, input validation, and comprehensive error handling',
+        'Deployed applications on Vercel and Render with proper environment configuration',
+        'Achieved 93/100 security score through implementation of enterprise-level security features',
+        'Applied security best practices including CORS policies, rate limiting, and audit logging'
       ]
     }
   ]
 
   const certifications = [
-    'HTML & CSS Fundamentals',
-    'JavaScript Programming',
-    'Web Development Basics',
-    'Problem Solving & Algorithms'
+    'HTML5, CSS3 & JavaScript (ES6+)',
+    'React.js & Modern Frontend Development',
+    'Node.js & Express.js Backend Development',
+    'MongoDB & Database Design',
+    'JWT Authentication & Security Implementation',
+    'Git Version Control & GitHub Workflows',
+    'Responsive Design & Tailwind CSS',
+    'RESTful API Design & Development'
   ]
 
   const hobbies = [
-    'Reading Books',
-    'Playing Sports',
-    'Learning New Technologies',
-    'Contributing to Open Source'
+    'Building Personal Projects',
+    'Learning New Web Technologies',
+    'Contributing to Open Source',
+    'Reading Tech Articles & Documentation',
+    'Playing Sports & Staying Active',
+    'Exploring Security Best Practices'
   ]
 
   return (
@@ -60,16 +75,26 @@ const Resume = () => {
               My <span className="bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">Resume</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-8">
-              A comprehensive overview of my professional journey
+              BCA graduate and aspiring Full Stack Developer with hands-on experience building responsive web applications using React.js, Node.js, Express.js, and MongoDB.
             </p>
-            <a
-              href="/Prakash_Chaudhary_Resume.pdf.pdf"
-              download="Prakash_Chaudhary_Resume.pdf"
-              className="btn-primary inline-flex items-center gap-2"
-            >
-              <HiDownload className="w-5 h-5" />
-              Download PDF
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="/Prakash_Chaudhary_Resume.html"
+                target="_blank"
+                className="btn-primary inline-flex items-center gap-2 justify-center"
+              >
+                <HiDownload className="w-5 h-5" />
+                View Online Resume
+              </a>
+              <a
+                href="/Prakash_Chaudhary_Resume_Print.html?print=true"
+                target="_blank"
+                className="btn-secondary inline-flex items-center gap-2 justify-center"
+              >
+                <HiDownload className="w-5 h-5" />
+                Print/Save as PDF
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>

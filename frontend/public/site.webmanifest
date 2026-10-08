@@ -1,0 +1,20 @@
+{
+  "name": "Prakash Chaudhary - Software Developer",
+  "short_name": "Prakash Portfolio",
+  "description": "Full Stack Developer from Kathmandu, Nepal specializing in React, Node.js, and MongoDB",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1f2937",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["portfolio", "business", "professional"]
+}

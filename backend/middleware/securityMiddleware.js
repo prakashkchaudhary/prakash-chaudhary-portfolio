@@ -174,16 +174,19 @@ export const preventParameterPollution = (req, res, next) => {
 
 // Enhanced security headers
 export const securityHeaders = (req, res, next) => {
-  // Content Security Policy
+  // Content Security Policy (Stricter)
   res.setHeader(
     'Content-Security-Policy',
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-    "style-src 'self' 'unsafe-inline'; " +
-    "img-src 'self' data: https:; " +
-    "font-src 'self' data:; " +
-    "connect-src 'self' https://prakash-chaudhary-portfolio.vercel.app; " +
-    "frame-ancestors 'none';"
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://va.vercel-scripts.com; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+    "img-src 'self' data: https: blob:; " +
+    "font-src 'self' data: https://fonts.gstatic.com; " +
+    "connect-src 'self' https://prakash-chaudhary-portfolio.vercel.app https://prakash-chaudhary-portfolio-1.onrender.com; " +
+    "frame-ancestors 'none'; " +
+    "base-uri 'self'; " +
+    "form-action 'self'; " +
+    "upgrade-insecure-requests;"
   );
   
   // Additional security headers
@@ -191,12 +194,20 @@ export const securityHeaders = (req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()');
+  
+  // Expect-CT (Certificate Transparency)
+  res.setHeader('Expect-CT', 'enforce, max-age=86400');
   
   // HSTS (HTTP Strict Transport Security) for production
   if (process.env.NODE_ENV === 'production') {
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   }
+  
+  // Cross-Origin policies
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
   
   next();
 };

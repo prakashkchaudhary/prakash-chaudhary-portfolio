@@ -2,19 +2,93 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://prakash-chaudhary-portfolio.vercel.app https://prakash-chaudhary-portfolio-1.onrender.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()" />
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+    <meta http-equiv="Cross-Origin-Resource-Policy" content="same-origin" />
+    
+    <!-- DNS Prefetch and Preconnect for Performance -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="//prakash-chaudhary-portfolio-1.onrender.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Favicon and App Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Prakash Chaudhary - Software Developer from Kathmandu, Nepal. Full Stack Developer specializing in React, Node.js, and MongoDB." />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Viewport and Mobile Optimization -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#1f2937" />
+    <meta name="color-scheme" content="light dark" />
+    
+    <!-- SEO and Meta Information -->
+    <meta name="description" content="Prakash Chaudhary - Software Developer from Kathmandu, Nepal. Full Stack Developer specializing in React, Node.js, and MongoDB. Professional portfolio showcasing projects and skills." />
     <meta name="author" content="Prakash Chaudhary" />
-    <meta name="keywords" content="Prakash Chaudhary, Software Developer, Full Stack Developer, React, Node.js, MongoDB, Kathmandu, Nepal" />
+    <meta name="keywords" content="Prakash Chaudhary, Software Developer, Full Stack Developer, React, Node.js, MongoDB, Kathmandu, Nepal, Web Developer, JavaScript, Portfolio" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://prakash-chaudhary-portfolio.vercel.app" />
+    
+    <!-- Verification Tags -->
     <meta name="google-site-verification" content="lo4s3ai8k2ivBCO-zVQFWla80SAYhM7lYqzgqsc2PKM" />
-    <!-- Open Graph -->
-    <meta property="og:title" content="Prakash Chaudhary | Software Developer" />
-    <meta property="og:description" content="Full Stack Developer from Kathmandu, Nepal specializing in React, Node.js, and MongoDB." />
-    <meta property="og:url" content="https://prakash-chaudhary-portfolio.vercel.app" />
+    <meta name="strix-verification" content="strix-verify-9d54ff95c89e83de4098d999c2634e44" />
+    
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <title>Prakash Chaudhary | Software Developer</title>
+    <meta property="og:url" content="https://prakash-chaudhary-portfolio.vercel.app" />
+    <meta property="og:title" content="Prakash Chaudhary | Software Developer" />
+    <meta property="og:description" content="Full Stack Developer from Kathmandu, Nepal specializing in React, Node.js, and MongoDB. Professional portfolio showcasing projects and skills." />
+    <meta property="og:image" content="https://prakash-chaudhary-portfolio.vercel.app/images/profile.jpg" />
+    <meta property="og:site_name" content="Prakash Chaudhary Portfolio" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://prakash-chaudhary-portfolio.vercel.app" />
+    <meta property="twitter:title" content="Prakash Chaudhary | Software Developer" />
+    <meta property="twitter:description" content="Full Stack Developer from Kathmandu, Nepal specializing in React, Node.js, and MongoDB. Professional portfolio showcasing projects and skills." />
+    <meta property="twitter:image" content="https://prakash-chaudhary-portfolio.vercel.app/images/profile.jpg" />
+    <meta property="twitter:creator" content="@praakashh" />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Prakash Chaudhary",
+      "jobTitle": "Software Developer",
+      "url": "https://prakash-chaudhary-portfolio.vercel.app",
+      "email": "prakashchaudhary92290@gmail.com",
+      "telephone": "+91 9229078100",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kathmandu",
+        "addressCountry": "Nepal"
+      },
+      "sameAs": [
+        "https://github.com/prakashkchaudhary",
+        "https://www.linkedin.com/in/prakash-chaudhary-232231401",
+        "https://x.com/praakashh"
+      ],
+      "knowsAbout": ["React", "Node.js", "MongoDB", "JavaScript", "Full Stack Development"],
+      "alumniOf": "Tula's Institute",
+      "description": "Full Stack Developer specializing in React, Node.js, and MongoDB"
+    }
+    </script>
+    
+    <title>Prakash Chaudhary | Software Developer - Portfolio</title>
   </head>
   <body>
     <div id="root"></div>
