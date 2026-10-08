@@ -1,61 +1,58 @@
 import rateLimit from 'express-rate-limit';
 import Admin from '../models/Admin.js';
 
-// IP-based rate limiting for login attempts
-export const loginRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 attempts per IP
-  skipSuccessfulRequests: true, // Don't count successful requests
-  message: {
-    success: false,
-    message: 'Too many login attempts from this IP. Please try again after 15 minutes.'
-  },
+// Enhanced rate limiting with different tiers
+const createRateLimiter = (windowMs, max, message) => rateLimit({
+  windowMs,
+  max,
+  skipSuccessfulRequests: true,
+  message: { success: false, message },
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
+    const retryAfter = Math.ceil(windowMs / 60000); // minutes
     res.status(429).json({
       success: false,
-      message: 'Too many login attempts from this IP. Please try again after 15 minutes.',
-      retryAfter: '15 minutes'
+      message,
+      retryAfter: `${retryAfter} minutes`
     });
   }
 });
 
-// Strict rate limiter for password reset
-export const passwordResetLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // 3 attempts per hour
-  message: {
-    success: false,
-    message: 'Too many password reset attempts. Please try again after 1 hour.'
-  },
-  standardHeaders: true,
-  legacyHeaders: false
-});
+// IP-based rate limiting for login attempts (Enhanced)
+export const loginRateLimiter = createRateLimiter(
+  15 * 60 * 1000, // 15 minutes
+  5, // 5 attempts per IP
+  'Too many login attempts from this IP. Please try again after 15 minutes.'
+);
 
-// MFA verification rate limiter
-export const mfaVerificationLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // 10 attempts
-  message: {
-    success: false,
-    message: 'Too many MFA verification attempts. Please try again later.'
-  },
-  standardHeaders: true,
-  legacyHeaders: false
-});
+// Strict rate limiter for password reset (Enhanced)
+export const passwordResetLimiter = createRateLimiter(
+  60 * 60 * 1000, // 1 hour
+  3, // 3 attempts per hour
+  'Too many password reset attempts. Please try again after 1 hour.'
+);
 
-// Email verification rate limiter
-export const emailVerificationLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 5, // 5 attempts per hour
-  message: {
-    success: false,
-    message: 'Too many verification email requests. Please try again after 1 hour.'
-  },
-  standardHeaders: true,
-  legacyHeaders: false
-});
+// MFA verification rate limiter (Enhanced)
+export const mfaVerificationLimiter = createRateLimiter(
+  15 * 60 * 1000, // 15 minutes
+  10, // 10 attempts
+  'Too many MFA verification attempts. Please try again later.'
+);
+
+// Email verification rate limiter (Enhanced)
+export const emailVerificationLimiter = createRateLimiter(
+  60 * 60 * 1000, // 1 hour
+  5, // 5 attempts per hour
+  'Too many verification email requests. Please try again after 1 hour.'
+);
+
+// General API rate limiter
+export const apiRateLimiter = createRateLimiter(
+  15 * 60 * 1000, // 15 minutes
+  100, // 100 requests per IP
+  'Too many API requests. Please try again later.'
+);
 
 // Check if account is locked
 export const checkAccountLock = async (req, res, next) => {
@@ -172,9 +169,9 @@ export const preventParameterPollution = (req, res, next) => {
   next();
 };
 
-// Enhanced security headers
+// Enhanced security headers with additional protections
 export const securityHeaders = (req, res, next) => {
-  // Content Security Policy (Stricter)
+  // Content Security Policy (Enhanced)
   res.setHeader(
     'Content-Security-Policy',
     "default-src 'self'; " +
@@ -186,28 +183,38 @@ export const securityHeaders = (req, res, next) => {
     "frame-ancestors 'none'; " +
     "base-uri 'self'; " +
     "form-action 'self'; " +
-    "upgrade-insecure-requests;"
+    "upgrade-insecure-requests; " +
+    "block-all-mixed-content;"
   );
   
-  // Additional security headers
+  // Enhanced security headers
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()');
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), midi=(), sync-xhr=(), fullscreen=(self)');
   
-  // Expect-CT (Certificate Transparency)
-  res.setHeader('Expect-CT', 'enforce, max-age=86400');
+  // Certificate Transparency
+  res.setHeader('Expect-CT', 'enforce, max-age=86400, report-uri="/api/ct-report"');
   
   // HSTS (HTTP Strict Transport Security) for production
   if (process.env.NODE_ENV === 'production') {
     res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   }
   
-  // Cross-Origin policies
+  // Cross-Origin policies (Enhanced)
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
+  
+  // Additional security headers
+  res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
+  res.setHeader('X-Download-Options', 'noopen');
+  res.setHeader('X-DNS-Prefetch-Control', 'off');
+  
+  // Remove server information
+  res.removeHeader('X-Powered-By');
+  res.removeHeader('Server');
   
   next();
 };

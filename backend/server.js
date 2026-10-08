@@ -15,7 +15,8 @@ import {
   detectSuspiciousActivity,
   sanitizeInput,
   preventParameterPollution,
-  securityHeaders
+  securityHeaders,
+  apiRateLimiter
 } from './middleware/securityMiddleware.js';
 
 dotenv.config();
@@ -62,30 +63,27 @@ if (process.env.NODE_ENV === 'production') {
 // Compression middleware - compress all responses
 app.use(compression());
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// Apply enhanced API rate limiting to all API routes
+app.use('/api/', apiRateLimiter);
 
-// Apply rate limiting to all API routes
-app.use('/api/', limiter);
-
-// CORS configuration - allow specific origins only
+// CORS configuration - strict origin whitelist
 const allowedOrigins = [
   'https://prakash-chaudhary-portfolio.vercel.app',
   'http://localhost:5173',
-  'http://localhost:5174',
-  process.env.FRONTEND_URL,
-].filter(Boolean);
+  'http://localhost:5174'
+];
+
+// Only add localhost origins in development
+if (process.env.NODE_ENV !== 'production') {
+  allowedOrigins.push('http://localhost:3000', 'http://127.0.0.1:5173');
+}
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, Postman, curl, etc.)
-    if (!origin) return callback(null, true);
+    // Allow requests with no origin (mobile apps, Postman, curl, etc.) only in development
+    if (!origin && process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
 
     if (allowedOrigins.indexOf(origin) !== -1) {
       return callback(null, true);
@@ -100,27 +98,27 @@ app.use(cors({
 app.use(express.json({ limit: '5mb' })); // Reduced from 10mb
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
-// Health check route
+// Health check routes - minimal information disclosure
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Portfolio API is running',
     status: 'healthy',
-    environment: process.env.NODE_ENV || 'development',
     version: '1.0.0'
   });
 });
 
 app.get('/api/health', (req, res) => {
+  // Basic health check without revealing sensitive system information
   res.json({ 
     status: 'OK',
     timestamp: new Date().toISOString()
   });
 });
 
-// Routes
-app.use('/api/contact', contactRoutes);
-app.use('/api/projects', projectRoutes);
-app.use('/api/auth', authRoutes);
+// Routes with specific size limits for better security
+app.use('/api/contact', express.json({ limit: '1mb' }), contactRoutes);
+app.use('/api/projects', express.json({ limit: '2mb' }), projectRoutes);
+app.use('/api/auth', express.json({ limit: '100kb' }), authRoutes);
 
 // 404 handler
 app.use((req, res) => {

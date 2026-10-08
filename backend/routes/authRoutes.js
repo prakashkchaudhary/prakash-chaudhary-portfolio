@@ -146,15 +146,25 @@ router.post('/login', loginRateLimiter, checkAccountLock, [
       }
     });
   } catch (error) {
-    // Log error securely - don't expose details in production
+    // Secure error logging - don't expose details in production
+    const errorId = crypto.randomUUID();
+    
     if (process.env.NODE_ENV === 'production') {
-      console.error('Login error occurred at:', new Date().toISOString());
+      console.error(`Login error [${errorId}]:`, {
+        timestamp: new Date().toISOString(),
+        email: email,
+        ip: clientIP,
+        userAgent: userAgent?.substring(0, 100), // Truncate long user agents
+        error: error.message
+      });
     } else {
       console.error('Login error:', error);
     }
+    
     res.status(500).json({
       success: false,
-      message: 'Server error during login'
+      message: 'Server error during login',
+      ...(process.env.NODE_ENV !== 'production' && { errorId })
     });
   }
 });
