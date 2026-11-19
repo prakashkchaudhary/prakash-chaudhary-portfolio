@@ -13,7 +13,7 @@ const setupDatabase = async () => {
 
     // Connect to MongoDB
     console.log('📡 Connecting to MongoDB...')
-    await mongoose.connect(process.env.MONGODB_URI)
+    await mongoose.connect(process.env.MONGO_URI)
     console.log('✅ Connected to MongoDB\n')
 
     // Create indexes

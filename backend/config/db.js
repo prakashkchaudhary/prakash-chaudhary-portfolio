@@ -1,8 +1,13 @@
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
+  if (!process.env.MONGO_URI) {
+    console.error('FATAL: MONGO_URI environment variable is not set.');
+    process.exit(1);
+  }
+
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
       maxPoolSize: 10,
       minPoolSize: 2,
       socketTimeoutMS: 45000,
