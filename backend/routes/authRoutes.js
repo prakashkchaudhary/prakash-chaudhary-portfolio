@@ -666,4 +666,3 @@ router.get('/security-info', protect, async (req, res) => {
 });
 
 export default router;
-````````
