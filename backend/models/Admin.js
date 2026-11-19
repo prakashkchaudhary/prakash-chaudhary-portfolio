@@ -142,7 +142,7 @@ adminSchema.methods.resetLoginAttempts = async function() {
   });
 };
 
-// Add login history entry
+// Add login history entry — FIX #14: use atomic $push/$slice to avoid race conditions
 adminSchema.methods.addLoginHistory = async function(ip, userAgent, success) {
   const history = {
     ip,
@@ -150,14 +150,12 @@ adminSchema.methods.addLoginHistory = async function(ip, userAgent, success) {
     timestamp: new Date(),
     success
   };
-  
-  // Keep only last 50 login attempts
-  if (this.loginHistory.length >= 50) {
-    this.loginHistory.shift();
-  }
-  
-  this.loginHistory.push(history);
-  await this.save();
+
+  // $slice: -50 keeps the last 50 entries atomically — no read-modify-write race
+  await this.constructor.updateOne(
+    { _id: this._id },
+    { $push: { loginHistory: { $each: [history], $slice: -50 } } }
+  );
 };
 
 const Admin = mongoose.model('Admin', adminSchema);

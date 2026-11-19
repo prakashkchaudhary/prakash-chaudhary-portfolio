@@ -36,8 +36,15 @@ app.use(sanitizeInput); // Sanitize user input
 app.use(preventParameterPollution); // Prevent parameter pollution
 
 // Session Management
+// FIX #7: Require a dedicated SESSION_SECRET — never share or fall back to JWT_SECRET.
+// If SESSION_SECRET is missing, fail fast rather than silently using an insecure default.
+if (!process.env.SESSION_SECRET) {
+  console.error('FATAL: SESSION_SECRET environment variable is not set. Refusing to start.');
+  process.exit(1);
+}
+
 app.use(session({
-  secret: process.env.SESSION_SECRET || process.env.JWT_SECRET || 'fallback-secret-change-in-production',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {

@@ -47,6 +47,13 @@ export const emailVerificationLimiter = createRateLimiter(
   'Too many verification email requests. Please try again after 1 hour.'
 );
 
+// Contact form rate limiter — strict to prevent spam/DoS (FIX #1)
+export const contactRateLimiter = createRateLimiter(
+  60 * 60 * 1000, // 1 hour
+  10, // 10 submissions per IP per hour
+  'Too many contact form submissions. Please try again after 1 hour.'
+);
+
 // General API rate limiter
 export const apiRateLimiter = createRateLimiter(
   15 * 60 * 1000, // 15 minutes
@@ -171,11 +178,12 @@ export const preventParameterPollution = (req, res, next) => {
 
 // Enhanced security headers with additional protections
 export const securityHeaders = (req, res, next) => {
-  // Content Security Policy (Enhanced)
+  // Content Security Policy — FIX #6: removed 'unsafe-inline' and 'unsafe-eval'
+  // Use nonces in your frontend build pipeline instead of unsafe directives.
   res.setHeader(
     'Content-Security-Policy',
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://va.vercel-scripts.com; " +
+    "script-src 'self' https://vercel.live https://va.vercel-scripts.com; " +
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "img-src 'self' data: https: blob:; " +
     "font-src 'self' data: https://fonts.gstatic.com; " +
@@ -194,18 +202,17 @@ export const securityHeaders = (req, res, next) => {
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), midi=(), sync-xhr=(), fullscreen=(self)');
   
-  // Certificate Transparency
-  res.setHeader('Expect-CT', 'enforce, max-age=86400, report-uri="/api/ct-report"');
+  // FIX #13: Removed deprecated Expect-CT header (removed from browsers/spec)
   
   // HSTS (HTTP Strict Transport Security) for production
   if (process.env.NODE_ENV === 'production') {
     res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   }
   
-  // Cross-Origin policies (Enhanced)
-  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  // FIX #15: Removed Cross-Origin-Embedder-Policy: require-corp
+  // It is only appropriate for pages using SharedArrayBuffer and would break legitimate embeds.
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-  res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-site');
   
   // Additional security headers
   res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
@@ -241,6 +248,7 @@ export default {
   passwordResetLimiter,
   mfaVerificationLimiter,
   emailVerificationLimiter,
+  contactRateLimiter,
   checkAccountLock,
   sessionManager,
   detectSuspiciousActivity,

@@ -18,10 +18,15 @@ router.get('/', cacheMiddleware(5 * 60 * 1000), async (req, res) => {
       query.category = category;
     }
 
+    // FIX #12: Sanitize limit — clamp between 1 and 100, default 50
+    const safeLimit = limit
+      ? Math.max(1, Math.min(parseInt(limit, 10) || 50, 100))
+      : 50;
+
     const projects = await Project.find(query)
       .select('-__v') // Exclude version field
       .sort({ createdAt: -1 })
-      .limit(limit ? parseInt(limit) : 0)
+      .limit(safeLimit)
       .lean(); // Use lean() for better performance
 
     res.status(200).json({
@@ -30,9 +35,11 @@ router.get('/', cacheMiddleware(5 * 60 * 1000), async (req, res) => {
       data: projects
     });
   } catch (error) {
+    // FIX #10: Don't expose error.message
+    console.error('Get projects error:', error);
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Failed to retrieve projects.'
     });
   }
 });
@@ -56,9 +63,11 @@ router.get('/:id', cacheMiddleware(5 * 60 * 1000), async (req, res) => {
       data: project
     });
   } catch (error) {
+    // FIX #10: Don't expose error.message
+    console.error('Get project error:', error);
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Failed to retrieve project.'
     });
   }
 });
@@ -90,9 +99,11 @@ router.post('/', protect, [
       data: project
     });
   } catch (error) {
+    // FIX #10: Don't expose error.message
+    console.error('Create project error:', error);
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Failed to create project.'
     });
   }
 });
@@ -122,9 +133,16 @@ router.put('/:id', protect, [
       });
     }
 
+    // FIX #11: Use an explicit allowlist instead of passing req.body directly.
+    // This prevents an attacker from injecting arbitrary fields into the document.
+    const { title, description, techStack, imageUrl, liveUrl, githubUrl, category, featured } = req.body;
+    const allowedUpdate = { title, description, techStack, imageUrl, liveUrl, githubUrl, category, featured };
+    // Strip undefined keys so we don't accidentally unset fields
+    Object.keys(allowedUpdate).forEach(k => allowedUpdate[k] === undefined && delete allowedUpdate[k]);
+
     const updatedProject = await Project.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      allowedUpdate,
       { new: true, runValidators: true }
     );
 
@@ -137,9 +155,11 @@ router.put('/:id', protect, [
       data: updatedProject
     });
   } catch (error) {
+    // FIX #10: Don't expose error.message
+    console.error('Update project error:', error);
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Failed to update project.'
     });
   }
 });
@@ -168,9 +188,11 @@ router.delete('/:id', protect, async (req, res) => {
       message: 'Project deleted successfully'
     });
   } catch (error) {
+    // FIX #10: Don't expose error.message
+    console.error('Delete project error:', error);
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Failed to delete project.'
     });
   }
 });

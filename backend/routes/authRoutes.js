@@ -88,11 +88,12 @@ router.post('/login', loginRateLimiter, checkAccountLock, [
         });
       }
 
+      // FIX #4: Reduced window from 2 to 1 (±30s clock drift is sufficient per RFC 6238)
       const verified = speakeasy.totp.verify({
         secret: admin.mfaSecret,
         encoding: 'base32',
         token: mfaCode,
-        window: 2 // Allow 2 time steps before/after current time
+        window: 1
       });
 
       if (!verified) {
@@ -466,16 +467,13 @@ router.post('/mfa/setup', protect, async (req, res) => {
     const clientIP = req.clientIP || req.ip;
     logAuthEvent('mfa_setup_initiated', admin.email, true, clientIP);
 
+    // FIX #5: Never return the raw TOTP secret in the response.
+    // The QR code already encodes the secret; the client scans that.
+    // Returning secret/manualEntry exposes the seed if the response is logged or intercepted.
     res.status(200).json({
       success: true,
       message: 'MFA setup initiated. Scan the QR code with your authenticator app.',
-      secret: secret.base32,
-      qrCode: qrCodeUrl,
-      manualEntry: {
-        issuer: 'Portfolio Admin',
-        account: admin.email,
-        secret: secret.base32
-      }
+      qrCode: qrCodeUrl
     });
   } catch (error) {
     console.error('MFA setup error:', error);
@@ -516,7 +514,7 @@ router.post('/mfa/verify', protect, mfaVerificationLimiter, [
       secret: admin.mfaSecret,
       encoding: 'base32',
       token: code,
-      window: 2
+      window: 1 // FIX #4: window: 1 (±30s)
     });
 
     if (!verified) {
@@ -668,3 +666,4 @@ router.get('/security-info', protect, async (req, res) => {
 });
 
 export default router;
+````````
