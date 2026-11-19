@@ -36,15 +36,18 @@ app.use(sanitizeInput); // Sanitize user input
 app.use(preventParameterPollution); // Prevent parameter pollution
 
 // Session Management
-// FIX #7: Require a dedicated SESSION_SECRET — never share or fall back to JWT_SECRET.
-// If SESSION_SECRET is missing, fail fast rather than silently using an insecure default.
+// SESSION_SECRET must be set in production. In development a warning is shown.
 if (!process.env.SESSION_SECRET) {
-  console.error('FATAL: SESSION_SECRET environment variable is not set. Refusing to start.');
-  process.exit(1);
+  if (process.env.NODE_ENV === 'production') {
+    console.error('FATAL: SESSION_SECRET environment variable is not set.');
+    process.exit(1);
+  } else {
+    console.warn('WARNING: SESSION_SECRET not set. Using insecure default for development only.');
+  }
 }
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'dev-only-insecure-secret',
   resave: false,
   saveUninitialized: false,
   cookie: {
